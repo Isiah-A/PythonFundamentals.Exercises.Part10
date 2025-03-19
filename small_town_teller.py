@@ -25,11 +25,17 @@ class Bank:
 
     def withdraw_money(self, account_id: int, amount:float):
         if account_id in self.accounts:
+            account = self.accounts.get(account_id)
+            account.balance -= round(amount, 2)
+        else:
+            raise ValueError(f"Account with id {account_id} does not exist.")
 
     def deposit_money(self, account_id: int, amount: float):
        if account_id in self.accounts:
         account = self.accounts.get(account_id)
         account.balance += round(amount, 2)
+       else:
+           raise ValueError(f"Account with id {account_id} does not exist.")
 
     def add_customer(self, customer: Person):
         if customer.account_id not in self.customers:
@@ -42,11 +48,16 @@ class Bank:
             raise ValueError(f"{account.owner.account_id} is not a valid customer id.")
         elif account.account_number in self.accounts:
             raise ValueError(f"Account with id {account.account_number} already exists")
+        else:
+            self.accounts[account.account_number] = account
 
-    def remove_account(self, account):
-        pass
+    def remove_account(self, account: Account):
+        if account.account_number not in self.accounts:
+            raise ValueError(f"Account {account.account_number} does not exist")
+        else:
+            self.accounts[account.account_number.pop] = account
 
-    def balance_inquiry(self, account, balance_inquiry):
+    def balance_inquiry(self, account: Account):
         pass
 
 bob = Person(1, 'bob', 'johnson')
@@ -58,3 +69,5 @@ bc_bank.add_account(bob_checking)
 bc_bank.add_account(bob_saving)
 bc_bank.deposit_money(400, 19.99)
 bc_bank.deposit_money(400, 500.95)
+bc_bank.withdraw_money(400, 29.99)
+bc_bank.remove_account(bob_saving)
