@@ -16,28 +16,35 @@ class Account:
         self.owner = owner
         self.balance = float
 
-    savings_account = []
-    checking_account = []
 
 
 class Bank:
     def __init__(self):
-        self.account = []
-        self.customer = [] #key
-        self.customer_data = {}
-    def withdraw_money(self, account):
-        pass
-    def deposit_money(self, account, deposit_money):
-       pass
+        self.accounts: dict[int, Account] = dict()
+        self.customers: dict[int, Person] = dict()
 
-    def add_customer(self, customer):
-        self.customer.append(customer)
+    def withdraw_money(self, account_id: int, amount:float):
+        if account_id in self.accounts:
 
-    def add_account(self, account):
-        self.account.append(account)
+    def deposit_money(self, account_id: int, amount: float):
+       if account_id in self.accounts:
+        account = self.accounts.get(account_id)
+        account.balance += round(amount, 2)
+
+    def add_customer(self, customer: Person):
+        if customer.account_id not in self.customers:
+            raise ValueError(f"Customer with id {customer.account_id} already exists.")
+        else:
+            self.customers[customer.account_id] = customer
+
+    def add_account(self, account: Account):
+        if account.owner.account_id not in self.customers:
+            raise ValueError(f"{account.owner.account_id} is not a valid customer id.")
+        elif account.account_number in self.accounts:
+            raise ValueError(f"Account with id {account.account_number} already exists")
 
     def remove_account(self, account):
-        self.account.remove(account)
+        pass
 
     def balance_inquiry(self, account, balance_inquiry):
         pass
@@ -50,3 +57,4 @@ bc_bank.add_customer(bob)
 bc_bank.add_account(bob_checking)
 bc_bank.add_account(bob_saving)
 bc_bank.deposit_money(400, 19.99)
+bc_bank.deposit_money(400, 500.95)
