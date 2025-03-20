@@ -57,9 +57,10 @@ class Bank:
         else:
             self.accounts[account.account_number.pop] = account
 
-    def balance_inquiry(self, account: Account):
-        #????
-        account.balance
+    def balance_inquiry(self, account_id,):
+        if account_id in self.accounts:
+            account = self.accounts.get(account_id)
+            return account.balance
 
 bob = Person(1, 'bob', 'johnson')
 bob_checking = Account(400, 'Checking', bob)
@@ -73,3 +74,4 @@ bc_bank.deposit_money(400, 500.95)
 bc_bank.withdraw_money(400, 29.99)
 bc_bank.remove_account(bob_saving)
 bc_bank.balance_inquiry(bob_saving)
+bc_bank.balance_inquiry(400)
