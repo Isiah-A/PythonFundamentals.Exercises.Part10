@@ -14,7 +14,7 @@ class Account:
         self.account_number = account_number
         self.account_type = account_type
         self.owner = owner
-        self.balance = float
+        self.balance = 0.0
 
 
 
@@ -33,12 +33,12 @@ class Bank:
     def deposit_money(self, account_id: int, amount: float):
        if account_id in self.accounts:
         account = self.accounts.get(account_id)
-        account.balance += round(amount, 2)
+        account.balance = account.balance + amount
        else:
            raise ValueError(f"Account with id {account_id} does not exist.")
 
     def add_customer(self, customer: Person):
-        if customer.account_id not in self.customers:
+        if customer.account_id in self.customers:
             raise ValueError(f"Customer with id {customer.account_id} already exists.")
         else:
             self.customers[customer.account_id] = customer
@@ -62,16 +62,26 @@ class Bank:
             account = self.accounts.get(account_id)
             return account.balance
 
-bob = Person(1, 'bob', 'johnson')
-bob_checking = Account(400, 'Checking', bob)
-bob_saving = Account(400, 'Saving', bob)
+
+
 bc_bank = Bank()
+
+bob = Person(1, 'bob', 'johnson')
 bc_bank.add_customer(bob)
-bc_bank.add_account(bob_checking)
+bob_saving = Account(1001, 'Saving', bob)
 bc_bank.add_account(bob_saving)
-bc_bank.deposit_money(400, 19.99)
-bc_bank.deposit_money(400, 500.95)
-bc_bank.withdraw_money(400, 29.99)
-bc_bank.remove_account(bob_saving)
-bc_bank.balance_inquiry(bob_saving)
-bc_bank.balance_inquiry(400)
+bc_bank.deposit_money(1001, 19.99)
+print(bc_bank.balance_inquiry(1001))
+
+
+john = Person(2, 'john', 'johnson')
+bc_bank.add_customer(john)
+john_checking = Account(2001, 'Checking', john)
+bc_bank.add_account(john_checking)
+bc_bank.deposit_money(2001, 500)
+bc_bank.withdraw_money(2001, 100.9)
+print(bc_bank.balance_inquiry(2001))
+
+
+
+
